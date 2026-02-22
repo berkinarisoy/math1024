@@ -1,0 +1,79 @@
+\section{Darboux Integration}
+
+\begin{definition}
+    A function $f:\R\to\R$ is Darboux integrable on $[a,b]$ if 
+    \[
+        G_{[a,b]}(f) = \left\{(x,y) \mid a\le x \le b, 0\le y \le f(x) \text{ or } f(x) \le y \le 0 \right\}
+    \] 
+    is Jordan measurable. In this case, we define the Darboux integral of $f$ on $[a,b]$ as
+    \[
+        \int_a^b f(x) \dv x := \mu(G_{[a,b]}(f)\cap H_+) - \mu(G_{[a,b]}(f)\cap H_-).
+    \]
+    where $H_+ = \{(x,y) \in \R^2 \mid y\ge 0\}$ and $H_- = \{(x,y) \in \R^2 \mid y\le 0\}$ are the upper and lower half-planes, respectively.
+\end{definition}
+
+\begin{definition} [Partition of an interval]
+    A partition of the interval $[a,b]$ is a finite set of points $P = \{x_0,x_1,...,x_n\}$ such that $a = x_0 < x_1 < ... < x_n = b$. The subintervals of $P$ are the intervals $[x_{i-1},x_i]$ for $i=1,...,n$. The mesh of the partition $P$ is defined as $\|P\| = \displaystyle\max_{1\le i \le n} (x_i - x_{i-1})$.
+\end{definition}
+
+\begin{definition} [Lower and upper Darboux sums]
+    Let $f:[a,b]\to\R$ be a bounded function and $P = \{x_0,x_1,...,x_n\}$ be a partition of $[a,b]$. The lower Darboux sum of $f$ with respect to the partition $P$ is defined as
+    \[
+        L(P,f) = \sum_{i=1}^n m_i (x_i - x_{i-1}),
+    \]
+    where $m_i = \displaystyle\inf_{x\in[x_{i-1},x_i]} f(x)$ is the infimum of $f$ on the subinterval $[x_{i-1},x_i]$. The upper Darboux sum of $f$ with respect to the partition $P$ is defined as
+    \[
+        U(P,f) = \sum_{i=1}^n M_i (x_i - x_{i-1}),
+    \]
+    where $M_i = \displaystyle\sup_{x\in[x_{i-1},x_i]} f(x)$ is the supremum of $f$ on the subinterval $[x_{i-1},x_i]$.
+\end{definition}
+
+\begin{theorem} [Riemann integrability criterion]
+    A bounded function $f:[a,b]\to\R$ is Darboux integrable on $[a,b]$ if and only if for every $\varepsilon > 0$, there exists a partition $P$ of $[a,b]$ such that
+    \[
+        U(P,f) - L(P,f) < \varepsilon.
+    \]
+\end{theorem}
+
+\begin{definition} [Lower and Upper Darboux integrals]
+    Let $f:[a,b]\to\R$ be a bounded function. The lower Darboux integral of $f$ on $[a,b]$ is defined as
+    \[
+        \underline{\int_a^b} f(x) \dv x = \sup_{P} L(P,f),
+    \]
+    where the supremum is taken over all partitions $P$ of $[a,b]$. The upper Darboux integral of $f$ on $[a,b]$ is defined as
+    \[
+        \overline{\int_a^b} f(x) \dv x = \inf_{P} U(P,f),
+    \]
+    where the infimum is taken over all partitions $P$ of $[a,b]$.
+\end{definition}
+
+\begin{definition} [Uniform continuity]
+    A function $f:[a,b]\to\R$ is uniformly continuous on $[a,b]$ if for every $\varepsilon > 0$, there exists a $\delta > 0$ such that for all $x,y \in [a,b]$, if $|x-y| < \delta$, then $|f(x) - f(y)| < \varepsilon$.
+\end{definition}
+
+\begin{theorem}
+    Let $f$ be a bounded function on $[a,b]$. If $f$ is continuous on $[a,b]$, then $f$ is uniformly continuous on $[a,b]$.
+\end{theorem}
+\begin{proof}
+    Assume that $f$ is not uniformly continuous. Then there exists $\varepsilon>0$ such that for all $\delta=\frac{1}{n}>0$, there exist $x_n,y_n\in [a,b]$ such that 
+    \begin{align*}
+        |x_n-y_n|<\frac{1}{n} \implies |f(x_n) - f(y_n)| \ge \varepsilon
+    \end{align*}
+    Since $x_n$ and $y_n$ are bounded, by Bolzano-Weierstrass Theorem, there exists $x_{n_k}$ with $\Lim_{k\to\infty}x_{n_k} = L\in[a,b]$. Then we have $|x_{n_k}-y_{n_k}|<\frac{1}{n_k}$, so $\Lim_{k\to\infty}y_{n_k} = L$. Since $f$ is continuous at $L$, we have 
+    \[\Lim_{k\to\infty}f(x_{n_k}) = f(L) = \Lim_{k\to\infty}f(y_{n_k})\] which contradicts $|f(x_{n_k}) - f(y_{n_k})| \ge \varepsilon$ for all $k$. This contradiction shows that $f$ must be uniformly continuous.
+\end{proof}
+
+\begin{theorem}
+    If $f:[a,b]\to\R$ is uniformly continuous, then $f$ is Darboux integrable on $[a,b]$.
+\end{theorem}
+\begin{proof}
+    For all $\varepsilon>0$, there exists $\delta>0$ such that for all $x,y\in[a,b]$, if $|x-y|<\delta$, then $|f(x)-f(y)|<\varepsilon$. Let $P = \{x_0,x_1,...,x_n\}$ be a partition of $[a,b]$ such that $\|P\|<\delta$. Then for all $i=1,...,n$, we have $M_i - m_i < \varepsilon$. Therefore,
+    \[
+        U(P,f) - L(P,f) = \sum_{i=1}^n (M_i - m_i)(x_i - x_{i-1}) < \varepsilon \sum_{i=1}^n (x_i - x_{i-1}) = \varepsilon(b-a).
+    \]
+    Substituting $\varepsilon$ with $\varepsilon/(b-a)$, we get $U(P,f) - L(P,f) < \varepsilon$. By the Riemann integrability criterion, $f$ is Darboux integrable on $[a,b]$.
+\end{proof}
+
+\begin{theorem} [Riemann sum]
+    
+\end{theorem}

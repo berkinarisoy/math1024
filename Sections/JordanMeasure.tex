@@ -1,0 +1,193 @@
+\section{Jordan Measure}
+
+\begin{definition}[Jordan measure on rectangles]
+    Let $<a,b>\times<c,d> \in \R^2$ be a rectangle. We define the \textit{Jordan measure} $\mu$ of this rectangle to be
+    \[
+        \mu(<a,b>\times<c,d>) := (b-a)(d-c).
+    \]
+    where we interpret $<a,b>$ as one of the following intervals $[a,b], (a,b), [a,b), (a,b]$.
+\end{definition}
+
+\begin{definition}[Simple sets]
+    A set $S\subseteq \R^2$ is called a \textit{simple set} if it can be expressed as a finite union of rectangles.
+    \[
+        S = \bigcup_{i=1}^n R_i \quad \text{where each } R_i \text{ is a rectangle.}
+    \] 
+    We define the Jordan measure $\mu$ of a simple set $S$ to be
+    \[
+        \mu(S) := \sum_{i=1}^n \mu(R_i).
+    \]
+    Note that this definition depends on the choice of rectangles $R_i$ that we use to express $S$ as a finite intersection of rectangles. We will show that this definition is well-defined, i.e. the value of $\mu(S)$ does not depend on the choice of rectangles $R_i$.
+\end{definition}
+
+\begin{proposition}
+    The Jordan measure $\mu$ of a simple set $S$ is well-defined.
+\end{proposition}
+\begin{proof}
+    Let $S$ be a simple set. Suppose we have two different ways of expressing $S$ as a finite union of rectangles:
+    \[
+        S = \bigcup_{i=1}^n R_i = \bigcup_{j=1}^m R_j'.
+    \]
+    We want to show that $\sum_{i=1}^n \mu(R_i) = \sum_{j=1}^m \mu(R_j')$.
+
+    Consider the collection of rectangles $\{R_i\}_{i=1}^n$ and $\{R_j'\}_{j=1}^m$. We can form the collection of all possible intersections of these rectangles:
+    \[
+        \{R_i \cap R_j' : 1 \leq i \leq n, 1 \leq j \leq m\}.
+    \]
+    Each intersection $R_i \cap R_j'$ is either empty or a rectangle (or a finite union of rectangles). Moreover, we have
+    \[
+        S = \bigcup_{i=1}^n R_i = \bigcup_{j=1}^m R_j' = \bigcup_{i=1}^n \bigcup_{j=1}^m (R_i \cap R_j').
+    \]
+    Since the Jordan measure is additive over disjoint unions of rectangles, we can write
+    \[
+        \sum_{i=1}^n \mu(R_i) = \sum_{i=1}^n \sum_{j=1}^m \mu(R_i \cap R_j') = \sum_{j=1}^m \sum_{i=1}^n \mu(R_i \cap R_j') = \sum_{j=1}^m \mu(R_j').
+    \]
+    Therefore, $\mu(S)$ is well-defined and does not depend on the choice of rectangles $R_i$.
+\end{proof}
+
+\begin{definition}
+    Let $X\subset \R^2$ be a bounded set. We define the inner $\mu_*$ and outer $\mu^*$ Jordan measures of $X$ as follows:
+    \begin{align*}
+        \mu_*(X) &:= \sup\{\mu(A) : \underset{\text{simple}}{A} \subset X\} \\
+        \mu^*(X) &:= \inf\{\mu(B) : \underset{\text{simple}}{B} \supset X\}
+    \end{align*}
+\end{definition}
+
+\begin{remark}
+    Note that $\sup$ and $\inf$ exist since the set of simple sets contained in $X$ is non-empty (e.g. the empty set) and the set of simple sets containing $X$ is also non-empty (e.g. a large rectangle containing $X$).
+\end{remark}
+
+\begin{remark}
+    The definitions of $\mu_*(X)$ and $\mu^*(X)$ are equivalent to these definitions:
+    \begin{align*}
+        \forall \varepsilon, \exists \underset{\text{simple}}{A} \text{ such that } \mu_*(X) - \varepsilon < \mu(A) \leq \mu_*(X) \\
+        \forall \varepsilon, \exists \underset{\text{simple}}{B} \text{ such that } \mu^*(X) + \varepsilon > \mu(B) > \mu^*(X)
+    \end{align*}
+\end{remark}
+
+\begin{remark}
+    For all $X\subset \R^2$, we have $\mu_*(X) \leq \mu^*(X)$.
+\end{remark}
+\begin{proof}
+    For all $\varepsilon>0$, there exist simple sets $A$ and $B$ with $A\subset X \subset B$ such that 
+    \[
+        \mu_*(X) - \varepsilon < \mu(A) \leq \mu(B) < \mu^*(X) + \varepsilon
+    \]
+    (The order on $\mu(A)$ and $\mu(B)$ is trivial). Since $\varepsilon$ is arbitrary, we have $\mu_*(X) \leq \mu^*(X)$.
+\end{proof}
+
+\begin{definition}
+    A set $X\subset \R^2$ is called \textit{Jordan measurable} if $\mu_*(X) = \mu^*(X)$. In this case, we define the Jordan measure $\mu(X)$ of $X$ to be $\mu_*(X) = \mu^*(X)$. Otherwise, we say that $X$ is \textit{not Jordan measurable}.
+\end{definition}
+
+\begin{theorem}
+    $X$ is Jordan measurable if and only if for all $\varepsilon > 0$, there exist simple sets $A$ and $B$ such that $A\subset X \subset B$ and $\mu(B) - \mu(A) < \varepsilon$.
+\end{theorem}
+\begin{proof}
+    ($\implies$) Suppose $X$ is Jordan measurable. Then for all $\varepsilon>0$, there exist simple sets $A$ and $B$ such that $A\subset X \subset B$ and
+    \[
+        \mu(X) - \varepsilon/2 < \mu(A) \le \mu(X) \le \mu(B) < \mu(X) + \varepsilon/2
+    \]
+    Rearranging, we get
+    \[
+        0 \le \mu(B) - \mu(A) <  \varepsilon
+    \]
+    ($\impliedby$) Now, suppose for all $\varepsilon>0$, there exist simple sets $A$ and $B$ such that $A\subset X \subset B$ and $\mu(B) - \mu(A) < \varepsilon$. Then
+    \[
+        \mu(A) \le \mu_*(X) \le \mu^*(X) \le \mu(B) \implies 0 \le \mu^*(X) - \mu_*(X) \le \mu(B) - \mu(A) < \varepsilon
+    \]
+    Since $\varepsilon$ is arbitrary, we get $\mu_*(X)=\mu^*(X)$.
+\end{proof}
+
+\begin{example}
+    Simple sets are Jordan measurable (take $A=X=B$).
+\end{example}
+
+\begin{example}
+    A point and finitely many points have measure zero.
+\end{example}
+
+\begin{theorem}
+    $X$ is Jordan measurable if and only if there exist simple sets $A_n$ and $B_n$ such that $A_n \subset X \subset B_n$ and $\Lim_{n \to \infty} \mu(B_n) =\Lim_{n\to\infty}\mu(A_n)$.
+\end{theorem}
+\begin{proof}
+    $(\implies)$ Suppose $X$ is Jordan measurable. For all $n$, choose $\varepsilon = \frac{1}{n}$ and take simple sets $A_n$ and $B_n$ such that $A_n \subset X \subset B_n$ and $\mu(B_n) - \mu(A_n) < 1/n$. Then
+    \[
+        0 \le \mu(B_n) - \mu(A_n) < 1/n \implies \Lim_{n\to\infty} \mu(B_n) =\Lim_{n\to\infty}\mu(A_n).
+    \]
+    $(\impliedby)$ Now, suppose there exist simple sets $A_n$ and $B_n$ such that $A_n \subset X \subset B_n$ and $\Lim_{n \to \infty} \mu(B_n) =\Lim_{n\to\infty}\mu(A_n)$. Then for all $\varepsilon>0$, there exists $N$ such that for all $n\ge N$, we have
+    \[
+        |\mu(B_n) - \mu(A_n)| < \varepsilon \implies \mu(B_n) - \mu(A_n) < \varepsilon
+    \]
+    choose any $n>N$ with $A = A_n$ and $B = B_n$ to get $A\subset X \subset B$ and $\mu(B) - \mu(A) < \varepsilon$.
+\end{proof}
+
+\begin{example}
+    Let $X=(\Q\cap [0,1])^2= \{(x,y)\in \Q^2 \mid 0\le x,y \le 1\}$. Then $X$ is not Jordan measurable.
+\end{example}
+\begin{proof}
+    We first consider the inner measure $\mu_*(X)$. Take any rectangle $R = <a,b>\times<c,d>$ such that $R\subset X$. Since irrationals are dense in $\R$, there exists an irrational number $x_0$ such that $a < x_0 < b$. Then for all $y\in \R$, we have $(x_0,y)\notin X$. Therefore, $a=b$ and $R$ can at most be a line segment with measure zero. Since this holds for all rectangles $R\subset X$, we have $\mu_*(X) = 0$. Now, consider the outer measure $\mu^*(X)$. Take any rectangle $R=<a,b>\times<c,d>$ such that $X\subset R$. Then $R$ must contain the square $[0,1]^2$ since $X$ is dense in $[0,1]^2$. Therefore, $\mu^*(X) \ge \mu([0,1]^2) = 1$. Since $\mu_*(X) = 0 < 1 \le \mu^*(X)$, we have $\mu_*(X) \neq \mu^*(X)$ and $X$ is not Jordan measurable.
+\end{proof}
+
+\begin{proposition}
+    For any bounded $X\subset Y \subset \R^2$, we have $\mu_*(X) \leq \mu_*(Y)$ and $\mu^*(X) \leq \mu^*(Y)$. If $X,Y$ are Jordan measurable, then $\mu(X) \leq \mu(Y)$.
+\end{proposition}
+\begin{proof}
+    \begin{align*}
+        \{\mu(A) : A \subset X \}\subseteq\{\mu(A) : A \subset Y \} &\implies \sup\{\mu(A) : A \subset X \}\le \sup\{\mu(A) : A \subset Y \} \\
+        &\iff \mu_*(X) \le \mu_*(Y)
+    \end{align*}
+    \begin{align*}
+        \{\mu(B) : B \supset X \}\subseteq\{\mu(B) : B \supset Y \} &\implies \sup\{\mu(B) : B \supset X \}\le \sup\{\mu(B) : B \supset Y \} \\
+        &\iff \mu^*(X) \le \mu^*(Y)
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[Finite subadditivity of the outer measure]
+    Let $X,Y\in \R^2$ be bounded. Then $\mu^*(X\cup Y) \le \mu^*(X) + \mu^*(Y)$.
+\end{theorem}
+\begin{proof}
+    For all $\varepsilon>0$, there are simple sets $A\supset X$ and $A'\supset Y$ such that $\mu(A) \le \mu^*(X) + \varepsilon/2$ and $\mu(A') \le \mu^*(Y)+\varepsilon/2$. Then
+    \[
+        \mu^*(X) + \mu^*(Y) \ge \mu(A) + \mu(A') - \varepsilon \ge \mu (A\cup A') - \varepsilon \ge \mu^*(X\cup Y) - \varepsilon
+    \]
+    Since $\varepsilon$ is arbitrary, we have $\mu^*(X\cup Y) \le \mu^*(X) + \mu^*(Y)$.
+\end{proof}
+
+\begin{theorem}
+    If $X$ and $Y$ are Jordan measurable, then
+    \begin{itemize}
+        \item $X\cup Y$ is Jordan measurable
+        \item $X\cap Y$ is Jordan measurable
+        \item $\mu(X\cup Y) = \mu(X) + \mu(Y) - \mu(X\cap Y)$
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    ($X\cup Y$ is measurable) For all $\varepsilon>0$, there exist simple sets $A\subset X \subset B$ and $A'\subset Y \subset B'$ such that 
+    \[
+        \mu(B)-\mu(A) <\varepsilon/2 \quad \mu(B')-\mu(A')<\varepsilon/2
+    \]
+    and
+    \[
+        A\cup A'\subset X\cup Y \subset B \cup B' \implies \mu_*(A\cup A') \le \mu_*(X\cup Y) \le \mu^*(X\cup Y) \le \mu^*(B\cup B')
+    \]
+    Since $A\cup A'$ and $B\cup B'$ are simple and $A\cup A'\subset B\cup B'$, we have
+    \begin{align*}
+        \mu(B\cup B') - \mu_*(A\cup A') &= \mu(B\cup B' \setminus A\cup A') \\
+        &= \mu((B\setminus A)\cup (B'\setminus A')) \\
+        &\le \mu(B\setminus A) + \mu(B'\setminus A') \\
+        &= \mu(B) - \mu(A) + \mu(B') - \mu(A') \\
+        &< \varepsilon/2 + \varepsilon/2 \\
+        &= \varepsilon
+    \end{align*}
+    Therefore, $\mu^*(X\cup Y) - \mu_*(X\cup Y) < \varepsilon$. $\newline$
+    ($X\cap Y$ is measurable) Let $A_n \subset X$ and $A_n'\subset Y$ be simple sets such that 
+    \begin{align*}
+        \limseq \mu(A_n) = \mu(X) \quad \text{and} \quad \limseq \mu(A_n') = \mu(Y)
+    \end{align*}
+    Using the finite subadditivity for simple sets, we have
+    \begin{align*}
+        \mu(A_n \cup A_n') = \mu(A_n) + \mu(A_n') - \mu(A_n\cap A_n')
+    \end{align*}
+    Since $\limseq \mu(A_n \cup A_n') = \mu(X\cup Y)$, the limit of $\mu(A_n\cap A_n')$ must also exist. Similarly for $B_n\supset X$ and $B_n'\supset Y$. The limit argument shows the finite additivity.
+\end{proof}
