@@ -1,0 +1,177 @@
+\section{Numerical Integration}
+
+\begin{definition} [Left rule]
+    We tag $x_i^* = x_{i-1}$ and denote $L_n = S(P^*, f)$.
+\end{definition}
+\begin{definition} [Right rule]
+    We tag $x_i^* = x_i$ and denote $R_n = S(P^*, f)$.
+\end{definition}
+\begin{definition} [Midpoint rule]
+    We tag $x_i^* = \frac{x_{i-1} + x_i}{2}$ and denote $M_n = S(P^*, f)$.
+\end{definition}
+
+\begin{theorem}
+    Let $f:[a,b] \to \mathbb{R}$ be a continuous function. Assume that $f'$ exists and is bounded on $[a,b]$. 
+    \begin{align*}
+        |f'(x)| \le K
+    \end{align*}
+    Then we have
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) - f(a)(b-a) \dv x\right|\le \frac{K(b-a)^2}{2}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    By the Mean Value Theorem, for each $x \in [a,b]$, there exists $c_x \in (a,x)$ such that
+    \begin{align*}
+        f(x) - f(a) = f'(c_x)(x-a).
+    \end{align*}
+    Therefore, we have
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) - f(a)(b-a) \dv x\right| &= \left|\int_{a}^{b} f'(c_x)(x-a) \dv x\right|\\
+        &\le \int_{a}^{b} |f'(c_x)| |x-a| \dv x\\
+        &\le K\int_{a}^{b} (x-a) \dv x\\
+        &= K\frac{(b-a)^2}{2}.
+    \end{align*}
+\end{proof}
+
+\begin{corollary}
+    If $[a,b]$ is partitioned into $n$ subintervals of equal length, then we have
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) \dv x - L_n\right| &= \left|\sum_{i=1}^{n}\int_{x_{i-1}}^{x_i} f(x) \dv x - \sum_{i=1}^{n} f(x_{i-1})(x_i - x_{i-1})\right| \\
+        &= \sum_{i=1}^{n}\left|\int_{x_{i-1}}^{x_i} f(x) \dv x - f(x_{i-1})(x_i - x_{i-1})\right| \\    
+        &\le \sum_{i=1}^{n}\frac{K(x_i - x_{i-1})^2}{2} \\
+        &= \sum_{i=1}^{n}\frac{K}{2}\left(\frac{b-a}{n}\right)^2 \\
+        &= \frac{K(b-a)^2}{2n}
+    \end{align*}
+    Same argument applies to $R_n$.
+\end{corollary}
+
+\begin{theorem}
+    The error bound for the midpoint rule is
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) \dv x - (b-a)f\left(\frac{a+b}{2}\right)\right| \le \frac{K_2(b-a)^3}{24}
+    \end{align*}
+    where $K_2$ is a constant such that $|f''(x)| \le K_2$ for all $x \in [a,b]$.
+\end{theorem}
+\begin{proof}
+    By Taylor's theorem, for each $x \in [a,b]$, there exists $\xi_x \in (a,x)$ such that
+    \begin{align*}
+        f(x) = f\left(\frac{a+b}{2}\right) + f'\left(\frac{a+b}{2}\right)\left(x-\frac{a+b}{2}\right) + \frac{f''(\xi_x)}{2}\left(x-\frac{a+b}{2}\right)^2.
+    \end{align*}
+    Therefore, we have
+    \begin{align*}
+        &\left|\int_{a}^{b} f(x) \dv x - (b-a)f\left(\frac{a+b}{2}\right)\right|\\
+        =& \left|\int_{a}^{b} f'\left(\frac{a+b}{2}\right)\left(x-\frac{a+b}{2}\right) + \frac{f''(\xi_x)}{2}\left(x-\frac{a+b}{2}\right)^2 \dv x\right|\\
+        =& \left|\int_{a}^{b} \frac{f''(\xi_x)}{2}\left(x-\frac{a+b}{2}\right)^2 \dv x\right|\\
+        \le& \int_{a}^{b} \frac{|f''(\xi_x)|}{2}\left(x-\frac{a+b}{2}\right)^2 \dv x\\
+        \le& \int_{a}^{b} \frac{K_2}{2}\left(x-\frac{a+b}{2}\right)^2 \dv x\\
+        =& \frac{K_2(b-a)^3}{24}.
+    \end{align*}    
+\end{proof}
+
+\begin{theorem}
+    Suppose $f\in \mathcal{C}^2([a,b])$ and $|f''(x)|\le K_2$ for all $x \in [a,b]$. Then
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) \dv x - M_n\right| &\le \frac{K_2(b-a)^3}{24n^2}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Using the error bound for the midpoint rule, we have
+    \begin{align*}
+        &\left|\int_{a}^{b} f(x) \dv x - M_n\right|\\
+        =& \left|\sum_{i=1}^{n}\int_{x_{i-1}}^{x_i} f(x) \dv x - \sum_{i=1}^{n} (x_i - x_{i-1})f\left(\frac{x_{i-1}+x_i}{2}\right)\right|\\
+        =& \sum_{i=1}^{n}\left|\int_{x_{i-1}}^{x_i} f(x) \dv x - (x_i - x_{i-1})f\left(\frac{x_{i-1}+x_i}{2}\right)\right|\\
+        \le& \sum_{i=1}^{n} \frac{K_2(x_i - x_{i-1})^3}{24}\\
+        =& \sum_{i=1}^{n} \frac{K_2}{24}\left(\frac{b-a}{n}\right)^3\\
+        =& \frac{K_2(b-a)^3}{24n^2}.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    Suppose $f\in \mathcal{C}^2([a,b])$ and $|f''(x)|\le K_2$ for all $x \in [a,b]$. Then
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) \dv x - T_n\right| &\le \frac{K_2(b-a)^3}{12n^2}
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We first consider the case $T_1=(b-a)(f(a)+f(b))/2$. Define auxiliary functions
+    \begin{align*}
+        g(x) &= \int_{a}^{x} f(t) \dv t - (x-a)\left(\frac{f(a)+f(x)}{2}\right) \\
+        h(x) &= g(x) - \left(\frac{x-a}{b-a}\right)^3 g(b).
+    \end{align*}
+    We have $h(a)=h(b)=0$. By Rolle's theorem, there exists $c \in (a,b)$ such that $h'(c)=0$. Therefore, we have
+    \begin{align*}
+        0 &= h'(c) \\
+        &= g'(c) - \frac{3(c-a)^2}{(b-a)^3} g(b) \\
+    \end{align*}
+    Also, we have
+    \begin{align*}
+        g'(x) &= f(x) - \frac{f(a)+f(x)}{2} - (x-a)\frac{f'(x)}{2} \\
+        &= \frac{f(x)-f(a)}{2} - (x-a)\frac{f'(x)}{2} \\
+        &= -\frac{f''(\xi_x)}{4}(x-a)^2 \quad \text{ for some } \xi_x \in (a,x).
+    \end{align*}
+    Therefore, we have
+    \begin{align*}
+        \left|\int_{a}^{b} f(x) \dv x - T_1\right| &= |g(b)| \\
+        &= \frac{(b-a)^3}{3} |g'(c)| \\
+        &\le \frac{K_2(b-a)^3}{12}.
+    \end{align*}
+    The general case is derived by
+    \begin{align*}
+        &\left|\int_{a}^{b} f(x) \dv x - T_n\right|\\
+        =& \left|\sum_{i=1}^{n}\int_{x_{i-1}}^{x_i} f(x) \dv x - \sum_{i=1}^{n} (x_i - x_{i-1})\frac{f(x_{i-1})+f(x_i)}{2}\right|\\
+        =& \sum_{i=1}^{n}\left|\int_{x_{i-1}}^{x_i} f(x) \dv x - (x_i - x_{i-1})\frac{f(x_{i-1})+f(x_i)}{2}\right|\\
+        \le& \sum_{i=1}^{n} \frac{K_2(x_i - x_{i-1})^3}{12}\\
+        =& \sum_{i=1}^{n} \frac{K_2}{12}\left(\frac{b-a}{n}\right)^3\\
+        =& \frac{K_2(b-a)^3}{12n^2}.
+    \end{align*}
+\end{proof}
+
+\begin{corollary}
+    If $f''(x)>0$, then
+    \begin{align*}
+        M_n \le \int_{a}^{b} f(x) \dv x \le T_n
+    \end{align*}
+\end{corollary}
+
+\begin{example} [Simpson's rule]
+    Denote $S_n = S(P^*, f)$. Then we have
+    \begin{align*}
+        S_n &= \sum_{i=1}^{n} (x_i - x_{i-1})\frac{f(x_{i-1}) + 4f\left(\dfrac{x_{i-1}+x_i}{2}\right) + f(x_i)}{6} \\
+        &= \frac{1}{3}(2T_n + M_{k}) \\
+        &= \frac{1}{3}(T_k + 2M_k)
+    \end{align*}
+    where $n = 2k$.
+\end{example}
+
+\begin{theorem} [Newton's method]
+    Let $f\in \mathcal{C}^2$ and $c$ be a root of $f(x)=0$. Define the sequence $\{x_n\}$ by
+    \begin{align*}
+        x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.
+    \end{align*}
+    If $M|x_0-c| < 1$ where
+    \begin{align*}
+        M = \sup |f''(x)|\cdot \sup \frac{1}{|2f'(x)|}
+    \end{align*}
+    Then $\limseq x_n = c$.
+\end{theorem}
+\begin{proof}
+    Using the Taylor expansion of $f$ at $x_n$, we have
+    \begin{align*}
+        f(x) = f(x_n) + f'(x_n)(x-x_n) + \frac{f''(\xi_x)}{2}(x-x_n)^2
+    \end{align*}
+    Since $f(c)=0$, we have
+    \begin{align*}
+        0 &= f(x_n) + f'(x_n)(c-x_n) + \frac{f''(\xi_c)}{2}(c-x_n)^2 \\
+        &= \frac{f(x_n)}{f'(x_n)} + (c-x_n) + \frac{f''(\xi_c)}{2f'(x_n)}(c-x_n)^2 \\
+        &= - x_{n+1} + c + \frac{f''(\xi_c)}{2f'(x_n)}(c-x_n)^2
+    \end{align*}
+    Therefore,
+    \begin{align*}
+        x_{n+1} - c = \frac{f''(\xi_c)}{2f'(x_n)}(c-x_n)^2 \le M|x_n - c|^2 \le M^3|x_n - c|^4 \le \cdots \le \frac{(M|x_0 - c|)^{2^n}}{M}.
+    \end{align*}
+    Finally,
+    \begin{align*}
+        M|x_0 - c| < 1 \implies \limseq x_n = c.
+    \end{align*}
+\end{proof}

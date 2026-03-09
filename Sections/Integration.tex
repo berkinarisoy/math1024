@@ -1,4 +1,4 @@
-\section{Darboux Integration}
+\section{Darboux \& Riemann Integration}
 
 \begin{definition}
     A function $f:\R\to\R$ is Darboux integrable on $[a,b]$ if 
@@ -74,6 +74,283 @@
     Substituting $\varepsilon$ with $\varepsilon/(b-a)$, we get $U(P,f) - L(P,f) < \varepsilon$. By the Riemann integrability criterion, $f$ is Darboux integrable on $[a,b]$.
 \end{proof}
 
-\begin{theorem} [Riemann sum]
-    
+\begin{definition} [Riemann sum]
+    Let $P^*$ be a tagged partition of $[a,b]$, i.e., $P^* = \{(x_0,x_1,...,x_n), (t_1,t_2,...,t_n)\}$ where $P = \{x_0,x_1,...,x_n\}$ is a partition of $[a,b]$ and $x_i^* \in [x_{i-1},x_i]$ is a tag for each subinterval. The Riemann sum of $f$ with respect to the tagged partition $P^*$ is defined as
+    \[
+        S(P^*,f) = \sum_{i=1}^n f(x_i^*)(x_i - x_{i-1}).
+    \]
+\end{definition}
+
+\begin{remark}
+    $L(P,f) \le S(P^*,f) \le U(P,f)$ for any tagged partition $P^*$ of $P$.
+\end{remark}
+
+\begin{definition}
+    A bounded function $f:[a,b]\to\R$ is Riemann integrable on $[a,b]$ if there exists a number $s\in\R$ such that for every $\varepsilon > 0$, there exists a $\delta > 0$ such that for all tagged partitions $P^*$ of $[a,b]$ with $\|P\| < \delta$, we have
+    \[
+        |S(P^*,f) - s| < \varepsilon.
+    \]
+\end{definition}
+
+\begin{theorem}
+    A bounded function $f:[a,b]\to\R$ is Darboux integrable on $[a,b]$ if and only if $f$ is Riemann integrable on $[a,b]$.
 \end{theorem}
+\begin{proof}
+    We will prove that the following statements are equivalent:
+    \begin{enumerate}
+        \item $\forall\varepsilon>0, \exists P$ such that $U(P,f) - L(P,f) < \varepsilon$. (Darboux integrability) \label{tfae}
+        \item $\forall\varepsilon>0, \exists \delta>0$ such that for all partitions $P$ with $\|P\|<\delta$, we have $|U(P,f) - s| < \varepsilon$ and $|L(P,f) - s| < \varepsilon$ for some $s\in\R$. \label{tfae2}
+        \item $\forall\varepsilon>0, \exists \delta>0$ such that for all tagged partitions $P^*$ with $\|P\|<\delta$, we have $|S(P^*,f) - s| < \varepsilon$ for some $s\in\R$. (Riemann integrability) \label{tfae3}
+    \end{enumerate}
+    \begin{itemize}
+        \item \ref{tfae2} $\implies$ \ref{tfae3}: For all $\varepsilon>0$, we have
+        \[
+            s - \varepsilon < L(P,f) \le S(P^*,f) \le U(P,f) < s + \varepsilon \implies |S(P^*,f) - s| < \varepsilon.
+        \] 
+        \item \ref{tfae2} $\implies$ \ref{tfae}: Choose any partition $P$ with $\|P\|<\delta$. Then we have
+        \[
+            U(P,f) < s + \varepsilon/2 \text{ and } L(P,f) > s - \varepsilon/2 \implies U(P,f) - L(P,f) < \varepsilon.
+        \]
+        \item \ref{tfae3} $\implies$ \ref{tfae2}: For all $\varepsilon>0$, there exists $\delta>0$ such that for all tagged partitions $P^*$ with $\|P\|<\delta$, we have $|S(P^*,f) - s| < \varepsilon$. We want to construct a tagged partition $P^*$ such that $\|P\|<\delta$ and $|U(P,f) - s| < \varepsilon$ and $|L(P,f) - s| < \varepsilon$. On $[x_{i-1},x_i]$ we pick $x_i^*$ such that 
+        \[
+            \sup_{x\in[x_{i-1},x_i]} f(x) - \varepsilon < f(x_i^*)
+        \]
+        Then
+        \[
+            U(P,f) - S(P^*,f) = \sum_{i=1}^n (M_i - f(x_i^*))(x_i - x_{i-1}) < \varepsilon \sum_{i=1}^n (x_i - x_{i-1}) = \varepsilon(b-a).
+        \]
+        Therefore,
+        \[
+            |U(P,f) - s| \le |U(P,f) - S(P^*,f)| + |S(P^*,f) - s| < \varepsilon(b-a) + \varepsilon = \varepsilon(b-a+1).
+        \]
+        We can similarly show that $|L(P,f) - s| < \varepsilon(b-a+1)$. Substituting $\varepsilon$ with $\varepsilon/(b-a+1)$, we get $|U(P,f) - s| < \varepsilon$ and $|L(P,f) - s| < \varepsilon$.
+        \item \ref{tfae} $\implies$ \ref{tfae2}: Let us first consider the upper sum. Let $s=\inf_P U(P,f)$. By assumption, for all $\varepsilon>0$, there exists a partition $P_0=\{a=x_0<x_1<\cdots<x_n=b\}$ such that $|U(P_0,f) - s| < \varepsilon$. $\newline$
+        We want to show that there exists $\delta>0$ such that for all partitions $P'$ with $\|P'\|<\delta$, we have $U(P',f) < s + \varepsilon$. Consider any partition $P$ with $\|P\|<\delta$. There are at most $2(n-1)$ subintervals $I_k$ of $P$ containing some $x_i$. Let $\mathcal{I}$ be the collection of these subintervals. 
+        $\newline$
+        Let $R=P\cup P_0$ be the common refinement of $P$ and $P_0$. We have
+        \begin{align*}
+            s \le U(R,f) \le U(P,f) \quad \text{ and } \quad s\le U(R,f) \le U(P_0,f)
+        \end{align*} 
+        Then
+        \begin{align*}
+            U(P,f) - U(R,f) &\le \sum_{I_k\in \mathcal{I}} \mu(\text{rectangles over } I_k) \\
+            &< 2n \times 2M\delta
+        \end{align*}
+        where $M$ is an upper bound for $f$. Choosing $\delta < \varepsilon/(4nM)$, we get $U(P,f) - U(R,f) < \varepsilon$. Finally,
+        \begin{align*}
+            |U(P,f) - s| &\le |U(P,f) - U(R,f)| + |U(R,f) - s| \\
+            &\le |U(P,f) - U(R,f)| + |U(P_0,f) - s| \\
+            &< \varepsilon + \varepsilon = 2\varepsilon.
+        \end{align*}
+        Similar arguments show that there exists $\delta>0$ such that for all partitions $P'$ with $\|P'\|<\delta$, we have $|L(P',f) - s'| < \varepsilon$ where $s' = \sup_P L(P,f)$. Since $s' \le s$, we have $|L(P',f) - s| < \varepsilon$ as well. Substituting $\varepsilon$ with $\varepsilon/2$, we get the desired result.
+    \end{itemize}
+\end{proof}
+
+\begin{theorem}
+    Let $f,g$ be integrable on $[a,b]$. Then $f+g$ is integrable on $[a,b]$ and 
+    \begin{align*}
+        \int_a^b (f(x) + g(x)) \dv x &= \int_a^b f(x) \dv x + \int_a^b g(x) \dv x. \\
+        \int_{a}^{b} \lambda f(x) \dv x &= \lambda \int_a^b f(x) \dv x \quad \text{ for all } \lambda \in \R.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    We have
+    \begin{align*}
+        S(P^*, f+g) &= \sum_{i=1}^{n} (f(x^*_i) + g(x^*_i)) (x_i - x_{i-1}) \\
+        &= \sum_{i=1}^{n} f(x^*_i)(x_i - x_{i-1}) + \sum_{i=1}^{n} g(x^*_i)(x_i - x_{i-1}) \\
+        &= S(P^*, f) + S(P^*, g).
+    \end{align*}
+    Since 
+    \begin{align*}
+        \lim_{\|P\|\to 0}S(P^*, f) = \int_{a}^{b} f(x) \dv x \quad \text{ and } \quad \lim_{\|P\|\to 0}S(P^*, g) = \int_{a}^{b} g(x) \dv x,
+    \end{align*}
+    the limit exists on the left-hand side. Thus we take the limit of both sides and obtain
+    \begin{align*}
+        \int_a^b (f(x) + g(x)) \dv x &= \int_a^b f(x) \dv x + \int_a^b g(x) \dv x.
+    \end{align*}
+    Now, let $\lambda \in \R$. Then
+    \begin{align*}
+        S(P^*, \lambda f) &= \sum_{i=1}^{n} \lambda f(x^*_i) (x_i - x_{i-1}) \\
+        &= \lambda \sum_{i=1}^{n} f(x^*_i) (x_i - x_{i-1}) \\
+        &= \lambda S(P^*, f).
+    \end{align*} 
+    We take the limit as $\|P\|\to 0$ on both sides and get
+    \begin{align*}
+        \int_{a}^{b} \lambda f(x) \dv x &= \lambda \int_a^b f(x) \dv x.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    Let $f$ be bounded on $[a,b]$. If $f$ has finitely many discontinuities on $[a,b]$, then $f$ is integrable on $[a,b]$.
+\end{theorem}
+\begin{proof}
+    Let $S$ be the set of discontinuities of $f$. Since $|S|$ is finite, suppose $|S|=N$. For all $\varepsilon>0$, define
+    \begin{align*}
+        I_s = (s-\varepsilon/2, s+\varepsilon/2), \quad s\in S.
+    \end{align*}
+    Then consider the area in $\cup_{s\in S}I_s$. Since $|f|\le M$ for some $M\in \R$, the area is bounded by $\varepsilon \cdot 2MN$. Since the remaining $N+1$ intervals are uniformly continuous, the partition can be chosen fine enough to make $U(P,f)-L(P,f)<\varepsilon$ for each interval. Then for the whole interval, we have
+    \begin{align*}
+        U(P,f) - L(P,f) < (N+1)\varepsilon + (2MN)\varepsilon = (2MN + N + 1)\varepsilon.
+    \end{align*}  
+    Substituting $\varepsilon \mapsto \varepsilon/(2MN + N + 1)$ gives the desired result.
+\end{proof}
+
+\begin{remark}
+    If $f$ has infinitely many discontinuities on $[a,b]$, this doesn't necessarily imply that $f$ is not integrable.
+\end{remark}
+
+\begin{remark}
+    If $f$ is integrable on $[a,b]$, then $f$ is bounded on $[a,b]$.
+\end{remark}
+\begin{proof}
+    Assume that $f$ is unbounded. Then for all $M>0$, there exists $x_M \in [a,b]$ such that $|f(x_M)| > M$. Let $\varepsilon = 1$. For all $\delta > 0$, there exists a tagged partition $P^* = \{(x_0,x_1,...,x_n)\}$ such that $\|P\| < \delta$ and $|S(P^*,f) - s| < \varepsilon$. Since $\|P\| < \delta$, there exists $i$ such that $x_M \in [x_{i-1}, x_i]$. We can choose the tag $x_i^*$ to be $x_M$. Then
+    \[
+        |S(P^*,f)| \ge |f(t_i)(x_i - x_{i-1})| > M(x_i - x_{i-1}) > 0.
+    \]
+    By choosing $M$ large enough, we can make $|S(P^*,f)|$ arbitrarily large, which contradicts the existence of the limit of Riemann sums. Therefore, $f$ must be bounded.
+\end{proof}
+
+\begin{theorem}
+    If $f$ is integrable on $[a,b]$, then $f$ is integrable on $[c,d]$ for all $[c,d]\subset[a,b]$.
+\end{theorem}
+\begin{proof}
+    For all $\varepsilon>0$, there exists a $P$ such that $U(P,f) - L(P,f) < \varepsilon$ on $[a,b]$. Let $P_1 = P \cup \{c,d\}$ be the common refinement of $P$ and $\{c,d\}$ and $P_2 = P_1 \cap [c,d]$. Then we have
+    \begin{align*}
+        U(P_2, f) - L(P_2, f) < U(P_1, f) - L(P_1, f) < U(P,f) - L(P,f) < \varepsilon.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    Let $f$ be integrable on $[a,b]$ and $c\in[a,b]$. Then $f$ is integrable on $[a,c]$ and $[c,b]$, and
+    \begin{align*}
+        \int_{a}^{b} f(x) \dv x = \int_{a}^{c} f(x) \dv x + \int_{c}^{b} f(x) \dv x.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    For all partitions $P$ of $[a,b]$, let $P_1 = P \cup \{c\}$ be the common refinement of $P$ and $\{c\}$, and $P_2 = P_1 \cap [a,c]$ and $P_3 = P_1 \cap [c,b]$. Then we have
+    \begin{align*}
+        S(P_1,f) = S(P_2,f) + S(P_3,f).
+    \end{align*}
+    Since the limit of $S(P_1,f)$ exists as $\|P\|\to 0$, the limits of $S(P_2,f)$ and $S(P_3,f)$ also exist as $\|P\|\to 0$. Thus we take the limit on both sides and get 
+    \begin{align*}
+        \int_{a}^{b} f(x) \dv x = \int_{a}^{c} f(x) \dv x + \int_{c}^{b} f(x) \dv x.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    Let $f,g$ be integrable on $[a,b]$ and $f(x) \ge g(x)$ for all $x\in[a,b]$. Then
+    \begin{align*}
+        \int_a^b f(x) \dv x \ge \int_a^b g(x) \dv x.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Note that proving this theorem is equivalent to proving
+    \begin{align*}
+        \int_{a}^{b} f(x) - g(x) \dv x \ge 0.
+    \end{align*}
+    For all tagged partitions $P^*$, we have
+    \begin{align*}
+        S(P^*, f-g) = \sum_{i=1}^{n} (f-g)(x^*_i)(x_i - x_{i-1}) \ge 0
+    \end{align*}
+    Hence by the order rule, the integral is non-negative.
+\end{proof}
+
+\begin{corollary}
+    \begin{align*}
+        -\int_{a}^{b} \left|f(x)\right| \dv x \le \int_{a}^{b} f(x) \dv x \le \int_{a}^{b} \left|f(x)\right| \dv x \iff \left|\int_{a}^{b} f(x) \dv x\right| \le \int_{a}^{b} \left|f(x)\right| \dv x
+    \end{align*}
+\end{corollary}
+
+\begin{theorem} [Integral Mean Value Theorem]
+    Let $f$ be continuous on $[a,b]$. Then there exists a $c\in (a,b)$ such that
+    \begin{align*}
+        \frac{1}{b-a}\int_{a}^{b} f(x) \dv x = f(c)
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Since $f$ is continuous on $[a,b]$, by the Extreme Value Theorem there are $m=\min_{x\in[a,b]} f(x)$ and $M=\max_{x\in[a,b]} f(x)$ such that
+    \[
+        m \le f(x) \le M \text{ for all } x\in[a,b].
+    \]
+    Then we have
+    \begin{align*}
+        m(b-a) \le \int_{a}^{b} f(x) \dv x \le M(b-a) \implies m \le \frac{1}{b-a}\int_{a}^{b} f(x) \dv x \le M.
+    \end{align*}
+    By the Intermediate Value Theorem, there exists a $c\in[a,b]$ such that \begin{align*}
+        \frac{1}{b-a}\int_{a}^{b} f(x) \dv x = f(c).
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    If $f$ is integrable on $[a,b]$, then $f$ is countinuous at some $c\in (a,b)$.
+\end{theorem}
+\begin{proof}
+    Assume that $f$ is integrable on $[a,b]$. There exists a $P_1$ such that
+    \begin{align*}
+        U(P_1,f) - L(P_1,f) < 1.
+    \end{align*}
+    Hence, there exists $I_1=[x_{i-1}, x_i]$ such that
+    \begin{align*}
+        \sup_{[x_{i-1}, x_i]} f(x) - \inf_{[x_{i-1}, x_i]} f(x) < \frac{1}{b-a}.
+    \end{align*}
+    Otherwise, we would have
+    \begin{align*}
+        U(P_1, f) - L(P_1, f) \ge \sum_{i=1}^n \frac{1}{b-a}(x_i - x_{i-1}) = 1,
+    \end{align*}
+    By adding a point to make a refinement if necessary, we can choose the closed interval $I_1$ strictly contained in $[a,b]$. We have shown that $f$ is integrable on $I_1\subset [a,b]$.
+    By induction there exists a partition $P_n$ of $I_{n-1}$ such that
+    \begin{align*}
+        U(P_n, f) - L(P_n, f) < \frac{|I_{n-1}|}{n(b-a)}
+    \end{align*}
+    where $I_n$ is strictly contained in $I_{n-1}$ with
+    \begin{align*}
+        \sup_{I_n} f(x) - \inf_{I_n} f(x) < \frac{1}{n(b-a)}.
+    \end{align*}
+    By the Nested Interval Property, there exists a $c\in\bigcap_{n=1}^{\infty} I_n$. We will show that $f$ is continuous at $c$. For all $\varepsilon>0$, take $n>1/\varepsilon(b-a)$, then $c\in I_n$. Assume that $I_n = [p,q]$ and let $\delta = \min(c-p, q-c)$. Then whenever, $|x-c|<\delta$, we have $x\in I_n$ and hence
+    \begin{align*}
+        |f(x) - f(c)| \le \sup_{I_n} f(x) - \inf_{I_n} f(x) < \frac{1}{n(b-a)} < \varepsilon.
+    \end{align*}
+\end{proof}
+
+\begin{corollary}
+    If $f$ is integrable on $[a,b]$ and $f(x)>0$, then $\int_{a}^{b} f(x) \dv x > 0$.
+\end{corollary}
+\begin{proof}
+    We know that $f(x)$ is continuous at some $c\in(a,b)$. Hence for $\varepsilon=f(c)/2 > 0$, there exists $\delta>0$ such that $x\in(c-\delta, c+\delta)$ implies
+    \begin{align*}
+        |f(x)-f(c)| < \varepsilon = \frac{f(c)}{2}.
+    \end{align*}
+    In other words, $f(x) > f(c)/2$ for all $x\in(c-\delta, c+\delta)$.
+    Then
+    \begin{align*}
+        \int_{a}^{b} f(x) \dv x \ge \int_{c-\delta}^{c+\delta} f(x) \dv x > \int_{c-\delta}^{c+\delta} \frac{f(c)}{2} \dv x = f(c)\delta > 0.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}
+    If $f$ is integrable on $[a,b]$, then $f^2$ is integrable on $[a,b]$.    
+\end{theorem}
+\begin{proof}
+    Note that $|f|\le M$ is bounded on $[a,b]$. Pick a partition $P$ such that $U(P,f) - L(P,f) < \varepsilon/(2M+1)$. For any $x,y\in[a,b]$, we have
+    \begin{align*}
+        |f^2(x) - f^2(y)| = |f(x) + f(y)| \cdot |f(x) - f(y)| \le 2M |f(x) - f(y)|.
+    \end{align*}
+    Taking the supremum over $x\in[x_{i-1}, x_i]$ and infimum over $y\in[x_{i-1}, x_i]$ gives
+    \begin{align*}
+        \sup_{x\in[x_{i-1}, x_i]} f^2(x) - \inf_{y\in[x_{i-1}, x_i]} f^2(y) \le 2M (\sup_{x\in[x_{i-1}, x_i]} f(x) - \inf_{y\in[x_{i-1}, x_i]} f(y)).
+    \end{align*}
+    Hence,
+    \begin{align*}
+        U(P,f^2) - L(P,f^2) &= \sum_{i=1}^{n} (\sup_{x\in[x_{i-1}, x_i]} f^2(x) - \inf_{y\in[x_{i-1}, x_i]} f^2(y))(x_i - x_{i-1}) \\
+        &\le 2M \sum_{i=1}^{n} (\sup_{x\in[x_{i-1}, x_i]} f(x) - \inf_{y\in[x_{i-1}, x_i]} f(y))(x_i - x_{i-1}) \\
+        &= 2M (U(P,f) - L(P,f)) < \varepsilon.
+    \end{align*}
+    This shows that $f^2$ is integrable on $[a,b]$.
+\end{proof}
+
+\begin{corollary}
+    If $f$ and $g$ are integrable on $[a,b]$, then $fg$ is integrable on $[a,b]$.
+\end{corollary}
+\begin{proof}
+    This follows from the fact that $fg = \frac{1}{2}((f+g)^2 - f^2 - g^2)$ and the linearity of integration.
+\end{proof}
